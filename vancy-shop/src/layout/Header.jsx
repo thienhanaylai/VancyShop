@@ -1,13 +1,13 @@
 import { NavLink } from "react-router";
 import logo from "../assets/logovancy.png";
 import styled from "styled-components";
-import { PhoneFilled } from "@ant-design/icons";
 
 const Navbar = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 7rem;
+  z-index: 100;
   height: 80px;
   background-color: #ffffff;
   position: fixed;

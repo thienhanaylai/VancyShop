@@ -1,8 +1,8 @@
-import "./App.css";
 import { Link } from "react-router-dom";
 import AppRoutes from "./routes/AppRoutes";
 import Header from "./layout/Header";
 import Footer from "./layout/Footer";
+import ListContact from "./layout/ListContact";
 
 function App() {
   return (
@@ -10,6 +10,7 @@ function App() {
       <Header />
       <AppRoutes />
       <Footer />
+      <ListContact />
     </div>
   );
 }
