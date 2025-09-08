@@ -27,10 +27,10 @@ const ListContact = () => {
   return (
     <>
       <Container>
-        <a href="">
+        <a href="https://www.facebook.com/vancan042510">
           <img src={fblogo} alt="" />
         </a>
-        <a href="">
+        <a href="https://zalo.me/0868486095">
           <img src={zalologo} alt="" />
         </a>
         <a href="tel:0868486095">

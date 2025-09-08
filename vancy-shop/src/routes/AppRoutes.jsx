@@ -2,6 +2,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import App from "../App";
 import HomePage from "../pages/HomePage";
+import AboutPage from "../pages/AboutPage";
 
 function AppRoutes() {
   return (
@@ -12,7 +13,7 @@ function AppRoutes() {
           path="/about"
           element={
             <>
-              <p>About</p>
+              <AboutPage />
             </>
           }
         />
