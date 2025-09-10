@@ -1,5 +1,7 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-
+import banner2 from "/src/assets/banner3.jpg";
+import chungnhan from "/src/assets/chungnhan1.png";
 const Section1 = styled.div`
   margin: auto;
   background: #fff;
@@ -13,23 +15,35 @@ const Section1 = styled.div`
 
 const ContainerTitle = styled.div`
   width: 100%;
-  background-image: url("/src/assets/banner2.jpg");
-  background-position: 2cqb;
-  background-color: rgba(255, 255, 255, 0.3);
-  background-blend-mode: lighten;
-  background-size: cover;
+  height: 130px;
   text-align: center;
   margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & img {
+    object-fit: cover;
+    object-position: 90% 60%;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1.5s ease-in;
+  }
+  .fade-in-image.visible {
+    opacity: 0.5;
+  }
 `;
 
 const Title = styled.h1`
   font-family: "Be Vietnam Pro", sans-serif;
   font-weight: 700;
-  font-size: 36;
   padding: 35px;
+  position: absolute;
+  z-index: 1;
 `;
 
 const Container = styled.div`
+  width: 100%;
   & h1 {
     font-family: "Be Vietnam Pro", sans-serif;
     font-weight: 700;
@@ -47,25 +61,50 @@ const Container = styled.div`
     font-weight: 400;
     font-size: 18px;
     padding: 15px 0;
+    padding-left: 15px;
     line-height: 35px;
+    text-indent: 30px;
   }
   & li {
     font-family: "Be Vietnam Pro", sans-serif;
     font-weight: 400;
     font-size: 18px;
     padding: 5px 0;
-    padding-left: 10px;
+    padding-left: 25px;
     list-style: none;
     line-height: 35px;
+  }
+  & img {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+    object-fit: contain;
+    width: 80%;
+    margin: 10px 0;
   }
 `;
 
 const AboutPage = () => {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    const img = new Image();
+    img.src = banner2;
+    img.onload = () => {
+      setIsLoaded(true);
+    };
+  }, [banner2]);
+
   return (
     <>
       <Section1>
         <ContainerTitle>
           <Title>VANCY SHOP MATCHA</Title>
+          <img
+            src={banner2}
+            alt=""
+            className={`fade-in-image ${isLoaded ? "visible" : ""}`}
+          />
         </ContainerTitle>
         <Container>
           <h1>Chào mừng đến với Vancy - Nơi Tinh Hoa Matcha Nhật Bản Hội Tụ</h1>
@@ -153,6 +192,10 @@ const AboutPage = () => {
               tín hàng đầu trong lĩnh vực sản xuất matcha công nghệ Nhật Bản.
             </li>
           </ul>
+          <img src={chungnhan} alt="" />
+          <p style={{ textAlign: "center", fontStyle: "italic" }}>
+            Chứng nhận đã qua kiểm định
+          </p>
           <p>
             Hãy để Vancy đồng hành cùng bạn trên hành trình khám phá hương vị
             matcha đích thực. Khám phá ngay các sản phẩm của chúng tôi để cảm

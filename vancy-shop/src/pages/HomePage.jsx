@@ -9,8 +9,9 @@ const Section1 = styled.div`
   background-color: white;
 
   & img {
-    object-fit: contain;
+    object-fit: cover;
     width: 100%;
+    height: 555px;
     opacity: 0;
     transition: opacity 1.5s ease-in-out;
   }
@@ -59,7 +60,6 @@ const Section2 = styled.div`
 `;
 
 const Section3 = styled.div`
-  width: 100%;
   padding: 15px 20px 25px 0;
   display: flex;
   flex-direction: column;

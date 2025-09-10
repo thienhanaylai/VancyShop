@@ -2,7 +2,7 @@ import styled from "styled-components";
 import fblogo from "../assets/fblogo.png";
 import phonelogo from "../assets/phone-call.png";
 import zalologo from "../assets/zalologo.svg";
-
+import shopeLogo from "/src/assets/shopee-icon.png";
 const Container = styled.div`
   position: fixed;
   bottom: 10px;
@@ -27,14 +27,17 @@ const ListContact = () => {
   return (
     <>
       <Container>
-        <a href="https://www.facebook.com/vancan042510">
-          <img src={fblogo} alt="" />
+        <a href="tel:0868486095" target="_blank">
+          <img src={phonelogo} alt="phone" />
         </a>
-        <a href="https://zalo.me/0868486095">
-          <img src={zalologo} alt="" />
+        <a href="https://www.facebook.com/vancan042510" target="_blank">
+          <img src={fblogo} alt="facebook" />
         </a>
-        <a href="tel:0868486095">
-          <img src={phonelogo} alt="" />
+        <a href="https://zalo.me/0868486095" target="_blank">
+          <img src={zalologo} alt="zalo" />
+        </a>
+        <a href="https://shopee.vn/vancy_matcha" target="_blank">
+          <img src={shopeLogo} alt="shopee" />
         </a>
       </Container>
     </>

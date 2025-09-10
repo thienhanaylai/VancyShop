@@ -1,7 +1,8 @@
 import { NavLink } from "react-router";
 import logo from "../assets/logovancy.png";
 import styled from "styled-components";
-
+import { DownOutlined, RightOutlined } from "@ant-design/icons";
+import { Dropdown, Space } from "antd";
 const Navbar = styled.div`
   display: flex;
   align-items: center;
@@ -45,7 +46,7 @@ const ListNav = styled.div`
         color: #000000;
         padding: 20px;
       }
-      & :hover {
+      & a:hover {
         color: #60af57;
         border-bottom: #60af57 solid 5px;
       }
@@ -56,6 +57,57 @@ const ListNav = styled.div`
     }
   }
 `;
+
+const DropdownLink = styled.div`
+  display: flex;
+  justify-content: space-between;
+  & a {
+    text-align: start;
+    font-family: "Be Vietnam Pro", sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: black;
+  }
+  & .right-arrow {
+    font-size: 12px;
+  }
+`;
+
+const items = [
+  {
+    key: "1",
+    label: (
+      <DropdownLink>
+        <a target="_blank" rel="" href="">
+          Bột Matcha
+        </a>
+        <RightOutlined className="right-arrow" />
+      </DropdownLink>
+    ),
+  },
+  {
+    key: "2",
+    label: (
+      <DropdownLink>
+        <a target="_blank" rel="" href="">
+          Bột Trà Rang
+        </a>
+        <RightOutlined className="right-arrow" />
+      </DropdownLink>
+    ),
+  },
+  {
+    key: "3",
+    label: (
+      <DropdownLink>
+        <a target="_blank" rel="" href="">
+          Dụng Cụ
+        </a>
+        <RightOutlined className="right-arrow" />
+      </DropdownLink>
+    ),
+  },
+];
 
 const Header = () => {
   return (
@@ -74,7 +126,12 @@ const Header = () => {
               <NavLink to="/about">GIỚI THIỆU</NavLink>
             </li>
             <li>
-              <NavLink to="/product">SẢN PHẨM</NavLink>
+              <Dropdown menu={{ items }} arrow={{ pointAtCenter: true }}>
+                <NavLink to="/product">
+                  SẢN PHẨM &nbsp;
+                  <DownOutlined />
+                </NavLink>
+              </Dropdown>
             </li>
             <li>
               <NavLink to="/contact">LIÊN HỆ</NavLink>

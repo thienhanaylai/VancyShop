@@ -21,7 +21,33 @@ function AppRoutes() {
           path="/product"
           element={
             <>
-              <p>product</p>
+              <p
+                style={{
+                  padding: "100px",
+                  textAlign: "center",
+                  fontWeight: "700",
+                  fontFamily: "Arial",
+                }}
+              >
+                Comming Soon ...
+              </p>
+            </>
+          }
+        />
+        <Route
+          path="/contact"
+          element={
+            <>
+              <p
+                style={{
+                  padding: "100px",
+                  textAlign: "center",
+                  fontWeight: "700",
+                  fontFamily: "Arial",
+                }}
+              >
+                Comming Soon ...
+              </p>
             </>
           }
         />
