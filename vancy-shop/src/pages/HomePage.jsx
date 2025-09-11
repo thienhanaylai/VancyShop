@@ -3,7 +3,7 @@ import banner1 from "../assets/banner1.png";
 import { useEffect, useState } from "react";
 import ListProduct from "../components/List/ListProduct";
 import CardProduct from "../components/Card/CardProduct";
-
+import banner2 from "../assets/banner2.jpg";
 const Section1 = styled.div`
   width: 100%;
   background-color: white;
@@ -47,7 +47,7 @@ const Content = styled.div`
 `;
 
 const Section2 = styled.div`
-  background-image: url("/src/assets/banner2.jpg");
+  background-image: url(${banner2});
   background-position: center;
   background-color: rgba(255, 255, 255, 0.7);
   background-blend-mode: lighten;

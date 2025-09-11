@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import banner2 from "/src/assets/banner3.jpg";
 import chungnhan from "/src/assets/chungnhan1.png";
+
 const Section1 = styled.div`
   margin: auto;
   background: #fff;

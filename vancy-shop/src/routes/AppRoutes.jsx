@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import App from "../App";
 import HomePage from "../pages/HomePage";
 import AboutPage from "../pages/AboutPage";
+import ProductPage from "../pages/ProductsPage";
 
 function AppRoutes() {
   return (
@@ -21,16 +22,7 @@ function AppRoutes() {
           path="/product"
           element={
             <>
-              <p
-                style={{
-                  padding: "100px",
-                  textAlign: "center",
-                  fontWeight: "700",
-                  fontFamily: "Arial",
-                }}
-              >
-                Comming Soon ...
-              </p>
+              <ProductPage />
             </>
           }
         />
