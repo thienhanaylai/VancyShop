@@ -1,15 +1,17 @@
 import styled from "styled-components";
 
 const Card = styled.div`
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 5px;
-  width: 15.5%;
   background-color: #ffffff;
   border-radius: 10px;
   cursor: pointer;
-  min-width: 200px;
+  width: auto;
+  min-width: auto;
+  border: #cacaca solid 1px;
   & img {
     margin: 15px 10px;
     border-radius: 5px;
@@ -32,7 +34,6 @@ const Card = styled.div`
     margin-bottom: 10px;
     font-weight: 500;
     font-size: 16px;
-    color: #a31a1a;
     text-align: end;
   }
   & img:hover,
@@ -56,8 +57,8 @@ const CardProduct = (product) => {
         <img src={product.src} alt={product.name} />
         <Content>
           <h3>{product.name}</h3>
-          <p>
-            {product.price[0].toLocaleString("vi-VN", {
+          <p style={{ color: "#d32000" }}>
+            {product.price.toLocaleString("vi-VN", {
               style: "currency",
               currency: "VND",
             })}{" "}

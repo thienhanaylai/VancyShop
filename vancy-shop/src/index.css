@@ -25,3 +25,8 @@ a:hover {
 .menu.open {
   transform: translateX(0); /* Di chuyển vào màn hình khi mở */
 }
+
+.MeteAnt .ant-card-meta-description {
+  font-weight: 600;
+  color: rgb(211, 1, 1);
+}

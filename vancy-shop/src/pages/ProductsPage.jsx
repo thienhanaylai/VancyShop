@@ -1,72 +1,125 @@
-import React, { useState } from "react";
-import { Row, Col, Card, Pagination, Image } from "antd";
+import React, { useEffect, useState } from "react";
+import { Row, Col, Card, Pagination, Image as ImageAnt } from "antd";
+import ListProducts from "../data/ListMatcha";
+import styled from "styled-components";
+import banner2 from "../assets/banner3.jpg";
+import CardProduct from "../components/Card/CardProduct";
+import useWindowSize from "../hooks/useWindowSize";
 
-// Dữ liệu giả lập - bạn có thể tạo một mảng dài hơn
-const allProducts = Array.from({ length: 25 }, (_, i) => ({
-  id: i + 1,
-  name: `Sản phẩm ${i + 1}`,
-  // Sử dụng placeholder cho ảnh
-  imageUrl: `https://picsum.photos/id/${i + 10}/300/200`,
-}));
+const ContainProduct = styled.div`
+  padding: 30px 7rem;
+`;
 
-const { Meta } = Card;
+const ContainerTitle = styled.div`
+  width: 100%;
+  height: 130px;
+  text-align: center;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & img {
+    object-fit: cover;
+    object-position: 90% 60%;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1.5s ease-in;
+  }
+  .fade-in-image.visible {
+    opacity: 0.5;
+  }
+`;
+
+const Title = styled.h1`
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-weight: 700;
+  padding: 35px;
+  position: absolute;
+  z-index: 1;
+`;
+
+function expandProductVariants(productsArray) {
+  return productsArray.flatMap((product) => {
+    return product.weight.map((weightValue, index) => {
+      return {
+        ...product,
+        id: `${product.id}-${weightValue}`,
+        weight: weightValue,
+        price: product.price[index],
+      };
+    });
+  });
+}
+
+const ListDetailProducts = expandProductVariants(ListProducts);
 
 function ProductPage() {
+  const { width } = useWindowSize();
+  const isMobile = width <= 768;
+
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 12; // Hiển thị 8 sản phẩm mỗi trang
+  const pageSize = 12;
 
   // Tính toán sản phẩm cần hiển thị cho trang hiện tại
   const indexOfLastProduct = currentPage * pageSize;
   const indexOfFirstProduct = indexOfLastProduct - pageSize;
-  const currentProducts = allProducts.slice(
+  const currentProducts = ListDetailProducts.slice(
     indexOfFirstProduct,
     indexOfLastProduct
   );
 
-  // Hàm xử lý khi chuyển trang
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
 
-  return (
-    <div style={{ padding: "24px" }}>
-      <h1>Sản phẩm của chúng tôi</h1>
+  const [isLoaded, setIsLoaded] = useState(false);
 
-      {/* Lưới sản phẩm */}
+  useEffect(() => {
+    const img = new Image();
+    img.src = banner2;
+    img.onload = () => {
+      setIsLoaded(true);
+    };
+  }, [banner2]);
+
+  return (
+    <ContainProduct
+      style={isMobile ? { padding: "0 20px" } : { padding: "20px 7rem" }}
+    >
+      <ContainerTitle>
+        <Title>VANCY SHOP MATCHA</Title>
+        <img
+          src={banner2}
+          alt=""
+          className={`fade-in-image ${isLoaded ? "visible" : ""}`}
+        />
+      </ContainerTitle>
+
       <Row gutter={[16, 24]}>
         {currentProducts.map((product) => (
-          <Col key={product.id} xs={24} sm={12} md={8} lg={6}>
-            <Card
-              hoverable
-              cover={
-                <Image
-                  alt={product.name}
-                  src={product.imageUrl}
-                  preview={false} // Tắt tính năng xem trước ảnh khi click
-                  style={{
-                    height: "200px",
-                    objectFit: "cover",
-                  }}
-                />
-              }
-            >
-              <Meta title={product.name} description="Mô tả ngắn gọn" />
-            </Card>
+          <Col key={product.id} xs={12} sm={8} md={8} lg={4}>
+            <CardProduct
+              key={product.id}
+              src={product.src}
+              name={`${product.name} - ${product.weight}g`}
+              weight={product.weight}
+              price={product.price}
+            />
           </Col>
         ))}
       </Row>
 
-      {/* Phân trang */}
       <Row justify="center" style={{ marginTop: "32px" }}>
         <Pagination
           current={currentPage}
           pageSize={pageSize}
-          total={allProducts.length}
+          total={ListDetailProducts.length}
           onChange={handlePageChange}
-          showSizeChanger={false} // Ẩn tùy chọn thay đổi pageSize
+          showSizeChanger={false}
         />
       </Row>
-    </div>
+    </ContainProduct>
   );
 }
 

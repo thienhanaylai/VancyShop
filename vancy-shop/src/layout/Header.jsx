@@ -65,7 +65,7 @@ const LogoMobile = styled.a`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+
   height: 100%;
   & p {
     font-family: "Story Script", sans-serif;
@@ -83,6 +83,8 @@ const LogoMobile = styled.a`
 
 const BergerButton = styled.a`
   margin-left: 20px;
+  left: 0;
+  position: absolute;
 `;
 
 const ListNav = styled.div`
@@ -228,7 +230,7 @@ const Header = () => {
             onClick={handleClick}
           />
           <MenuBerger className={`menu ${isOpen ? "open" : ""}`}>
-            <LogoMobile href="" style={{ height: "auto" }}>
+            <LogoMobile href="/" style={{ height: "auto" }}>
               <img src={logo} alt="logo" />
               <p>MATCHA VANCY</p>
             </LogoMobile>
@@ -248,7 +250,7 @@ const Header = () => {
             </ul>
           </MenuBerger>
 
-          <LogoMobile href="">
+          <LogoMobile href="/">
             <img src={logo} alt="logo" />
             <p>MATCHA VANCY</p>
           </LogoMobile>

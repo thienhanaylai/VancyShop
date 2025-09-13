@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import banner2 from "/src/assets/banner3.jpg";
 import chungnhan from "/src/assets/chungnhan1.png";
+import useWindowSize from "../hooks/useWindowSize";
 
 const Section1 = styled.div`
   margin: auto;
@@ -50,12 +51,14 @@ const Container = styled.div`
     font-weight: 700;
     font-size: 26px;
     padding: 10px 0;
+    text-align: justify;
   }
   & h2 {
     font-family: "Be Vietnam Pro", sans-serif;
     font-weight: 700;
     font-size: 22px;
     padding: 10px 0;
+    text-align: justify;
   }
   & P {
     font-family: "Be Vietnam Pro", sans-serif;
@@ -65,6 +68,7 @@ const Container = styled.div`
     padding-left: 15px;
     line-height: 35px;
     text-indent: 30px;
+    text-align: justify;
   }
   & li {
     font-family: "Be Vietnam Pro", sans-serif;
@@ -87,7 +91,8 @@ const Container = styled.div`
 
 const AboutPage = () => {
   const [isLoaded, setIsLoaded] = useState(false);
-
+  const { width } = useWindowSize();
+  const isMobile = width <= 768;
   useEffect(() => {
     const img = new Image();
     img.src = banner2;
@@ -98,8 +103,10 @@ const AboutPage = () => {
 
   return (
     <>
-      <Section1>
-        <ContainerTitle>
+      <Section1
+        style={isMobile ? { padding: "0 20px" } : { padding: "20px 7rem" }}
+      >
+        <ContainerTitle style={isMobile ? { fontSize: "16px" } : {}}>
           <Title>VANCY SHOP MATCHA</Title>
           <img
             src={banner2}
@@ -108,7 +115,9 @@ const AboutPage = () => {
           />
         </ContainerTitle>
         <Container>
-          <h1>Chào mừng đến với Vancy - Nơi Tinh Hoa Matcha Nhật Bản Hội Tụ</h1>
+          <h1 style={isMobile ? { fontSize: "22px" } : {}}>
+            Chào mừng đến với Vancy - Nơi Tinh Hoa Matcha Nhật Bản Hội Tụ
+          </h1>
           <p>
             Tại Vancy, chúng tôi mang trong mình niềm đam mê và khát khao lan
             tỏa văn hóa thưởng thức matcha đích thực đến với mọi người. Chúng
@@ -116,7 +125,9 @@ const AboutPage = () => {
             thơm ngon, mà còn là nguồn năng lượng cho tinh thần sảng khoái, giúp
             bạn thư giãn và tập trung hơn.
           </p>
-          <h2>Nguồn Gốc và Chất Lượng Vượt Trội</h2>
+          <h2 style={isMobile ? { fontSize: "20px" } : {}}>
+            Nguồn Gốc và Chất Lượng Vượt Trội
+          </h2>
 
           <p>
             Sản phẩm bột matcha và houjicha của Vancy tự hào được sản xuất tại
@@ -134,7 +145,9 @@ const AboutPage = () => {
             uy tín như ISO, FDA, VSATTP, HALLA và đủ tiêu chuẩn để xuất khẩu
             sang thị trường Châu Âu khắt khe.
           </p>
-          <h2>Đa Dạng Sản Phẩm cho Mọi Nhu Cầu</h2>
+          <h2 style={isMobile ? { fontSize: "20px" } : {}}>
+            Đa Dạng Sản Phẩm cho Mọi Nhu Cầu
+          </h2>
           <p>
             Vancy hiểu rằng mỗi người có một gu thưởng thức matcha riêng. Vì
             vậy, chúng tôi mang đến một danh mục sản phẩm phong phú để đáp ứng
@@ -171,7 +184,9 @@ const AboutPage = () => {
               rang độc đáo, ấm áp.
             </li>
           </ul>
-          <h2>Cam Kết của Vancy</h2>
+          <h2 style={isMobile ? { fontSize: "20px" } : {}}>
+            Cam Kết của Vancy
+          </h2>
           <ul>
             <li>
               <strong>- Chất lượng hảo hạng:</strong> Sản phẩm có màu xanh diệp
