@@ -1,12 +1,11 @@
 import { useEffect, useReducer, useState } from "react";
-import { Row, Col, Select, Space, Pagination, Image as ImageAnt } from "antd";
-import ListProducts from "../data/ListMatcha";
+import { Row, Col, Select, Space, Pagination, Spin, message } from "antd"; // Thêm Spin và message
 import styled, { keyframes } from "styled-components";
 import banner2 from "../assets/banner8.jpg";
 import CardProduct from "../components/Card/CardProduct";
 import useWindowSize from "../hooks/useWindowSize";
 import FillterListProduct from "../utils/FillterListProduct";
-import expandProductVariants from "../utils/expandProductVariants";
+import ProductService from "../services/ProductService";
 
 const fadeIn = keyframes`
   from {
@@ -16,7 +15,6 @@ const fadeIn = keyframes`
   to {
     opacity: 1;
     transform: translateY(0);
-    
   }
 `;
 
@@ -67,48 +65,91 @@ const FillterSelection = styled.div`
   }
 `;
 
-const ListDetailProducts = expandProductVariants(ListProducts); //danh sách sản phẩm ban đầu
-
 const productReducer = (state, action) => {
   switch (action.type) {
+    case "SET_PRODUCTS":
+      return {
+        ...state,
+        originalList: action.payload,
+        displayList: action.payload,
+      };
+
     case "SORT_PRODUCTS":
+      const listToSort = [...state.originalList];
+      let sortedList;
+
       switch (action.payload) {
         case "price-asc":
-          return FillterListProduct(ListDetailProducts, "price", "ascending");
+          sortedList = FillterListProduct(
+            listToSort,
+            "prices[0].price",
+            "ascending"
+          );
+          break;
         case "price-desc":
-          return FillterListProduct(ListDetailProducts, "price", "descending");
+          sortedList = FillterListProduct(
+            listToSort,
+            "prices[0].price",
+            "descending"
+          );
+          break;
         case "name-asc":
-          return FillterListProduct(ListDetailProducts, "name", "ascending");
+          sortedList = FillterListProduct(listToSort, "name", "ascending");
+          break;
         case "name-desc":
-          return FillterListProduct(ListDetailProducts, "name", "descending");
+          sortedList = FillterListProduct(listToSort, "name", "descending");
+          break;
         case "none":
-          return ListProducts;
         default:
-          return state;
+          sortedList = listToSort; // Trả về danh sách gốc
+          break;
       }
+      return { ...state, displayList: sortedList };
+
     default:
       return state;
   }
 };
 
 function ProductPage() {
+  const [loading, setLoading] = useState(true);
   const { width } = useWindowSize();
   const isMobile = width <= 768;
-  const pageSize = 12; //hiển thị 12 sản phẩm 1 trang
+  const pageSize = 12;
 
   const [currentPage, setCurrentPage] = useState(1);
-  const indexOfLastProduct = currentPage * pageSize;
-  const indexOfFirstProduct = indexOfLastProduct - pageSize;
-
-  const [productListState, dispatch] = useReducer(productReducer, ListProducts);
   const [isLoaded, setIsLoaded] = useState(false);
+
+  const initialState = {
+    originalList: [],
+    displayList: [],
+  };
+  const [productListState, dispatch] = useReducer(productReducer, initialState);
+
+  useEffect(() => {
+    const getListProducts = async () => {
+      try {
+        setLoading(true);
+        const response = (await ProductService.getAllProduct()).data;
+        dispatch({ type: "SET_PRODUCTS", payload: response });
+      } catch (err) {
+        console.log(err);
+        message.error("Không thể tải dữ liệu sản phẩm.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    getListProducts();
+  }, []);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
+    window.scrollTo(0, 0);
   };
 
   const handleChange = (value) => {
     dispatch({ type: "SORT_PRODUCTS", payload: value });
+    setCurrentPage(1);
   };
 
   useEffect(() => {
@@ -117,7 +158,29 @@ function ProductPage() {
     img.onload = () => {
       setIsLoaded(true);
     };
-  }, [banner2]);
+  }, []);
+
+  const indexOfLastProduct = currentPage * pageSize;
+  const indexOfFirstProduct = indexOfLastProduct - pageSize;
+  const currentProducts = productListState.displayList.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+  if (loading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "80vh",
+          colorAdjust: "#6B8E23",
+        }}
+      >
+        <Spin size="large" />
+      </div>
+    );
+  }
 
   return (
     <ContainProduct
@@ -127,7 +190,7 @@ function ProductPage() {
         <Title>SẢN PHẨM</Title>
         <img
           src={banner2}
-          alt=""
+          alt="Product Banner"
           className={`fade-in-image ${isLoaded ? "visible" : ""}`}
         />
       </ContainerTitle>
@@ -149,33 +212,23 @@ function ProductPage() {
         </Space>
       </FillterSelection>
       <Row gutter={[16, 16]}>
-        {productListState
-          .slice(indexOfFirstProduct, indexOfLastProduct)
-          .map((product) => (
-            <Col key={product.id} xs={12} sm={8} md={8} lg={4}>
-              <CardProduct
-                key={product.id}
-                id={product.id}
-                src={product.src}
-                name={`${product.name} ${
-                  product.weight.length > 1 ? "" : ` - ${product.weight}g`
-                }`}
-                weight={
-                  product.weight.length > 1 ? product.weight[0] : product.weight
-                }
-                price={
-                  product.price.length > 1 ? product.price[0] : product.price
-                }
-              />
-            </Col>
-          ))}
+        {/* 5. Dùng `currentProducts` đã được phân trang để map */}
+        {currentProducts.map((product) => (
+          <Col key={product.id} xs={12} sm={8} md={8} lg={4}>
+            <CardProduct
+              id={product._id}
+              src={product.images[0]}
+              name={`${product.name}`}
+              price={product.prices[0].price}
+            />
+          </Col>
+        ))}
       </Row>
-
       <Row justify="center" style={{ marginTop: "32px" }}>
         <Pagination
           current={currentPage}
           pageSize={pageSize}
-          total={productListState.length}
+          total={productListState.displayList.length} // Tổng số sản phẩm
           onChange={handlePageChange}
           showSizeChanger={false}
         />

@@ -59,8 +59,7 @@ const HorizontalScrollList = () => {
               src={product.src}
               id={product.id}
               name={product.name}
-              weight={product.weight}
-              price={product.price[0]}
+              price={product.prices[0].price}
             />
           </List.Item>
         )}

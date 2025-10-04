@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import styled from "styled-components";
 
-const Card = styled.a`
+const Card = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;

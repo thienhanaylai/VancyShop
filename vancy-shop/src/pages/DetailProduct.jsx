@@ -1,40 +1,20 @@
 import { useLocation, useParams } from "react-router";
-import ListProducts from "../data/ListMatcha";
-import { Breadcrumb, Carousel, Col, Divider, Radio, Rate, Row } from "antd";
+import {
+  Breadcrumb,
+  Carousel,
+  Col,
+  Divider,
+  Radio,
+  Rate,
+  Row,
+  Spin,
+} from "antd";
 import styled from "styled-components";
-import expandProductVariants from "../utils/expandProductVariants";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GetBreadcrumItem from "../utils/GetBreadcrumItem";
 import useWindowSize from "../hooks/useWindowSize";
-import CardProduct from "../components/Card/CardProduct";
-
-const ListDetailProducts = [
-  ...ListProducts,
-  expandProductVariants(ListProducts),
-].flat(1); //danh sách sản phẩm ban đầu
-
-function getRandomItemsFromArray(arr, numItems) {
-  const shuffled = [...arr];
-  let currentIndex = shuffled.length;
-  let randomIndex;
-
-  while (currentIndex !== 0) {
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
-
-    [shuffled[currentIndex], shuffled[randomIndex]] = [
-      shuffled[randomIndex],
-      shuffled[currentIndex],
-    ];
-  }
-  return shuffled.slice(0, numItems);
-}
-
-function getByid(ListPrd, id) {
-  return ListPrd.find((product) => {
-    return product.id.toString().localeCompare(id, "vi") === 0; //so sanh 2 id
-  });
-}
+import Recomend from "../components/List/Recomend";
+import ProductService from "../services/ProductService";
 
 const DetailProductPage = styled.div`
   padding: 1rem 7rem;
@@ -156,33 +136,51 @@ const StyledImage = styled.img`
   object-fit: contain;
 `;
 
-const Recommend = styled.div`
-  & .title-recommned {
-    text-align: center;
-    font-family: "Be Vietnam Pro", sans-serif;
-    font-weight: 500;
-    font-size: 24px;
-    margin: 15px 0px;
-  }
-`;
-
 const DetailProduct = () => {
   const { width } = useWindowSize();
   const isMobie = width <= 768;
   const { id } = useParams();
-  const product = getByid(ListDetailProducts, id);
+  const [product, setProduct] = useState();
+  const [list, setList] = useState([]);
   const [weight, setWeight] = useState(0);
-  const [price, setPrice] = useState(product.price[0]);
+  const [price, setPrice] = useState(0);
   const location = useLocation();
-  const breadcrumItem = GetBreadcrumItem(location.pathname);
+
+  // const breadcrumItem = GetBreadcrumItem(location.pathname);
   const handleSelectWeight = (e) => {
     setWeight(e.target.value);
-    setPrice(product.price[e.target.value]);
+    setPrice(product.prices[e.target.value].price);
   };
+  useEffect(() => {
+    const getListProducts = async () => {
+      try {
+        const response = await ProductService.getProduct(id);
+        const ListProduct = (await ProductService.getAllProduct()).data;
+        console.log(ListProduct);
+        setProduct(response.data);
+        setList(ListProduct);
+        setPrice(response.data.prices[0].price);
+        setWeight(0);
+      } catch (err) {
+        console.log(err);
+      } finally {
+      }
+    };
+    getListProducts();
+  }, []);
+
+  if (!product) {
+    return (
+      <>
+        <Spin></Spin>
+      </>
+    );
+  }
+
   return (
     <>
       <DetailProductPage style={isMobie ? { padding: "1rem" } : {}}>
-        <Breadcrumb className="breadcrum" items={breadcrumItem} />
+        <Breadcrumb className="breadcrum" items={[]} />
         <ContainerInfoProduct className={isMobie ? "mobile" : ""}>
           <Carousel
             arrows
@@ -191,16 +189,16 @@ const DetailProduct = () => {
             autoplaySpeed={3000}
             className={isMobie ? "Carousel-mobile" : ""}
           >
-            {product.imgList[0].map((item) => {
+            {product.images.map((item) => {
               return (
-                <div key={product.imgList[0].indexOf(item)}>
+                <div key={product.images[0].indexOf(item)}>
                   <StyledImage src={`${item}`} alt="" />
                 </div>
               );
             })}
           </Carousel>
           <Info className={isMobie ? "info-mobile" : ""}>
-            <h3>{`${product.name}`}</h3>
+            <h3>{`${product.name} - ${product.prices[weight].weight}`}</h3>
             <div style={{ display: "flex" }}>
               <p className="rating">
                 {product.rate.toLocaleString(undefined, {
@@ -241,10 +239,10 @@ const DetailProduct = () => {
               value={weight}
               onChange={handleSelectWeight}
             >
-              {product.weight.map((item, index) => {
+              {product.prices.map((item, index) => {
                 return (
                   <Radio.Button key={index} value={index}>
-                    {item}g
+                    {item.weight}
                   </Radio.Button>
                 );
               })}
@@ -255,39 +253,7 @@ const DetailProduct = () => {
             </a>
           </Info>
         </ContainerInfoProduct>
-        <Recommend>
-          <Divider
-            style={{ borderColor: "#7cb305" }}
-            className="title-recommned"
-          >
-            Các sản phẩm khác
-          </Divider>
-          <Row gutter={[16, 24]}>
-            {getRandomItemsFromArray(
-              expandProductVariants(ListProducts),
-              6
-            ).map((product) => (
-              <Col key={product.id} xs={12} sm={8} md={8} lg={4}>
-                <CardProduct
-                  key={product.id}
-                  id={product.id}
-                  src={product.src}
-                  name={`${product.name} ${
-                    product.weight.length > 1 ? "" : ` - ${product.weight}g`
-                  }`}
-                  weight={
-                    product.weight.length > 1
-                      ? product.weight[0]
-                      : product.weight
-                  }
-                  price={
-                    product.price.length > 1 ? product.price[0] : product.price
-                  }
-                />
-              </Col>
-            ))}
-          </Row>
-        </Recommend>
+        <Recomend ListProducts={list} />
       </DetailProductPage>
     </>
   );

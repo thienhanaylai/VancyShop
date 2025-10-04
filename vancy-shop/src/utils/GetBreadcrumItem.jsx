@@ -6,12 +6,9 @@
 import { Link } from "react-router";
 import GetProductbyId from "./GetProductbyId";
 import ListProducts from "../data/ListMatcha";
-import expandProductVariants from "./expandProductVariants";
+//import expandProductVariants from "./expandProductVariants";
 
-const ListDetailProducts = [
-  ...ListProducts,
-  expandProductVariants(ListProducts),
-].flat(1);
+const ListDetailProducts = [...ListProducts, ListProducts].flat(1);
 
 function translate(str) {
   let segment = "";
