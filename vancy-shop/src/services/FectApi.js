@@ -1,6 +1,6 @@
 import axios from "axios";
 const FectApi = axios.create({
-  baseURL: `http://localhost:8080/api`,
+  baseURL: `http://api.nguyenlieuvancy.shop/api`,
   headers: {
     "Content-Type": "application/json",
   },

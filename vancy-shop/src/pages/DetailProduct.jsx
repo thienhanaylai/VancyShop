@@ -136,6 +136,10 @@ const StyledImage = styled.img`
   object-fit: contain;
 `;
 
+const priceAffterDiscount = (price, discount) => {
+  return price - price * (discount / 100);
+};
+
 const DetailProduct = () => {
   const { width } = useWindowSize();
   const isMobie = width <= 768;
@@ -156,7 +160,6 @@ const DetailProduct = () => {
       try {
         const response = await ProductService.getProduct(id);
         const ListProduct = (await ProductService.getAllProduct()).data;
-        console.log(ListProduct);
         setProduct(response.data);
         setList(ListProduct);
         setPrice(response.data.prices[0].price);
@@ -167,7 +170,7 @@ const DetailProduct = () => {
       }
     };
     getListProducts();
-  }, []);
+  }, [id]);
 
   if (!product) {
     return (
@@ -212,12 +215,45 @@ const DetailProduct = () => {
                 defaultValue={product.rate}
               />
             </div>
-            <p>
-              {price.toLocaleString("vi-VN", {
-                style: "currency",
-                currency: "VND",
-              })}
-            </p>
+            {product.discount > 0 ? (
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <p>
+                  {priceAffterDiscount(price, product.discount).toLocaleString(
+                    "vi-VN",
+                    {
+                      style: "currency",
+                      currency: "VND",
+                    }
+                  )}{" "}
+                </p>
+                <p
+                  style={{
+                    fontStyle: "italic",
+                    textDecoration: "line-through",
+                    color: "gray",
+                    textDecorationColor: "gray",
+                    fontSize: "16px",
+                    fontWeight: "400",
+                  }}
+                >
+                  {" "}
+                  {price.toLocaleString("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  })}
+                </p>
+              </div>
+            ) : (
+              <>
+                <p>
+                  {price.toLocaleString("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  })}
+                </p>
+              </>
+            )}
+
             <InfoProduct>
               <ul>
                 <li>

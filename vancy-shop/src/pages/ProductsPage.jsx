@@ -214,7 +214,7 @@ function ProductPage() {
       <Row gutter={[16, 16]}>
         {/* 5. Dùng `currentProducts` đã được phân trang để map */}
         {currentProducts.map((product) => (
-          <Col key={product.id} xs={12} sm={8} md={8} lg={4}>
+          <Col key={product._id} xs={12} sm={8} md={8} lg={4}>
             <CardProduct
               id={product._id}
               src={product.images[0]}
