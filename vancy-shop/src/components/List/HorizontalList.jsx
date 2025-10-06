@@ -54,7 +54,7 @@ const HorizontalScrollList = () => {
         const response = (await ProductService.getAllProduct()).data;
         const ListProduct = [];
         response.map((item) => {
-          if (item.catalog.includes("product")) ListProduct.push(item);
+          if (item.catalog.includes("recommend")) ListProduct.push(item);
         });
         setDataSource(ListProduct);
       } catch (err) {
