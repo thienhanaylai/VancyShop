@@ -130,7 +130,7 @@ const items = [
     key: "1",
     label: (
       <DropdownLink>
-        <a target="_blank" rel="" href="">
+        <a target="/product" rel="" href="">
           Bột Matcha
         </a>
         <RightOutlined className="right-arrow" />
@@ -141,7 +141,7 @@ const items = [
     key: "2",
     label: (
       <DropdownLink>
-        <a target="_blank" rel="" href="">
+        <a target="/" rel="" href="">
           Bột Trà Rang
         </a>
         <RightOutlined className="right-arrow" />
@@ -152,7 +152,7 @@ const items = [
     key: "3",
     label: (
       <DropdownLink>
-        <a target="_blank" rel="" href="">
+        <a target="/" rel="" href="">
           Dụng Cụ
         </a>
         <RightOutlined className="right-arrow" />
