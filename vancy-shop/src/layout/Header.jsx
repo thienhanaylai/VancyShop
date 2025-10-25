@@ -41,7 +41,7 @@ const NavbarMobile = styled.div`
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 `;
 
-const Logo = styled.div`
+const Logo = styled.a`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -258,7 +258,7 @@ const Header = () => {
         </NavbarMobile>
       ) : (
         <Navbar>
-          <Logo>
+          <Logo href="/">
             <img src={logo} alt="logo" />
             <p>MATCHA VANCY</p>
           </Logo>
